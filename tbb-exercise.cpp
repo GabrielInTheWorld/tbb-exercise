@@ -94,19 +94,26 @@ void tbbTest() {
 }
 
 void runEratosthenes(std::vector<int> &vector) {
-    int rangeBegin = 0;
+    int rangeBegin = 2;
     int rangeEnd = vector.size();
-
+    int maxPrim = sqrt(rangeEnd) + 2;
+    cout << maxPrim << endl;
     std::vector<int> tmp = vector;
 
     double duration;
     std::clock_t start = clock();
 
-    for ( int i = rangeBegin; i < rangeEnd; ++i ) {
+    for ( int i = rangeBegin; i < rangeEnd; i += 2 ) {
+        tmp[i] = -1;
+    }
+
+    for ( int i = rangeBegin + 1; i < maxPrim; i += 2 ) {
+        //cout << i << endl;
         if ( tmp[i] == -1 ) {
             continue;
         }
-        for ( int j = i+1; j < rangeEnd; ++j ) {
+        for ( int j = i+tmp[i]; j < rangeEnd; j += tmp[i] ) {
+            //cout << tmp[j] << endl;
             if ( tmp[j] == -1 ) {
                 continue;
             }
@@ -119,6 +126,7 @@ void runEratosthenes(std::vector<int> &vector) {
     duration = clock() - start;
 
     printDuration(duration);
+    //printVector(tmp);
     //std::cout << "duration: " << duration << " - per sec: " << (duration /(double)CLOCKS_PER_SEC) << std::endl;
     //std::cout << "clocks per sec: " << CLOCKS_PER_SEC << std::endl;
 
@@ -128,7 +136,7 @@ void runEratosthenes(std::vector<int> &vector) {
 }
 
 void runErasthotenesParallel(std::vector<int>& vector) {
-    int rangeBegin = 0;
+    int rangeBegin = 2;
     int rangeEnd = vector.size();
     double duration;
 
@@ -138,47 +146,81 @@ void runErasthotenesParallel(std::vector<int>& vector) {
     int startCount = 0;
     int endCount = 0;
 
+    int maxPrim = sqrt(rangeEnd) + 2;
+    int counter = 0;
+
+    std::vector<std::thread::id> vectorId;
+
     std::vector<int> tmp = vector;
-    std::clock_t start = clock();
+    //std::clock_t start = clock();
 
     auto callback = [&](int index) {
-        ++amountCallback;
-        //cout << "Run callback" << endl;
+        //vectorId.push_back(std::this_thread::get_id());
+        //++amountCallback;
+        //cout << "Run callback: " << index << endl;
         //startCount += rangeEnd / 8;
         //startCount = index;
         //endCount += (rangeEnd - index) / 8;
-        endCount = rangeEnd;
-        for ( int i = index+1; i < rangeEnd; ++i ) {
-            //cout << tmp[i] << endl;
-            if ( tmp[i] == -1 ) {
-                continue;
-            }
-            if ( tmp[i] % tmp[index] == 0 ) {
-                tmp[i] = -1;
-            }
-        }
+        //endCount = rangeEnd;
+
+        //for ( int i = index+1; i < rangeEnd; ++i ) {
+        //    //cout << tmp[i] << endl;
+        //    if ( tmp[i] == -1 ) {
+        //        continue;
+        //    }
+        //    if ( tmp[i] % tmp[index] == 0 ) {
+        //        tmp[i] = -1;
+        //    }
+        //}
+
+        //cout << "number: " << tmp[index] << "\t" << counter << "\t" << tmp[counter] << "\t" << tmp[index] % tmp[counter] << endl;
+        if ( tmp[index] == -1 ) return;
+        //if ( index % counter == 0 ) tmp[index] = -1;
+        tmp[index] = -1;
     };
 
-    for ( int i = rangeBegin; i < rangeEnd; ++i ) {
+    amountCallback = 0;
+
+    std::clock_t start = clock();
+    for ( int i = rangeBegin + 2; i < rangeEnd; i += 2 ) {
+        tmp[i] = -1;
+    }
+
+    for ( int i = rangeBegin + 1; i < maxPrim; i += 2 ) {
+        //cout << "i: " << i << "\t" << tmp[i] << endl;
         if ( tmp[i] == -1 ) {
             continue;
         }
-        amountCallback = 0;
+        counter = i;
+        //cout << tmp[i] << endl;
         /*startCount = i;
         endCount = i;*/
-        parallel_for(i, rangeEnd, callback);
-        ++amountLoop;
-        cout << "Parallel loop ready" << endl;
+        //int increase = (rangeEnd - i) / 8;
+        //for ( int j = i + 1; j < rangeEnd; j += increase ) {
+        //    //cout << "j: " << j << endl;
+        //    if ( rangeEnd - j < increase )
+        //        parallel_for(j, rangeEnd - j, callback);
+        //    else
+        //        parallel_for(j, (int)(j+increase - 1), callback);
+        //}
+        parallel_for(3*i, (int)vector.size(), 2*i, callback);
+        //++amountLoop;
+        //cout << "Parallel loop ready" << endl;
         /*parallel_for(rangeBegin, rangeEnd, [=](auto index) {
             cout << "any: " << tmp[i] << endl;
             });*/
     }
 
     duration = clock() - start;
+    cout << "Parallel" << endl;
     printDuration(duration);
     //printVector(tmp);
-    cout << "Amount loop: " << amountLoop << endl;
-    cout << "Amount callback" << amountCallback << endl;
+    //for (int i = 0; i < vectorId.size(); ++i ) {
+    //    //cout << "ID: " << vectorId[i] << endl;
+    //}
+    //printVector(tmp);
+    //cout << "Amount loop: " << amountLoop << endl;
+    //cout << "Amount callback: " << amountCallback << endl;
 }
 
 int main()
@@ -186,13 +228,20 @@ int main()
     //tbbTest();
 
     //testAddToVector();
+    std::vector<int> vector(pow(10, 8), 0);
 
-    std::vector<int> vector;
-    for ( int i = 2; i < 200; ++i ) {
+    auto callback = [&](int index) {
+        vector[index] = index;
+    };
+    tbb::parallel_for(0, (int)vector.size(), callback);
+
+    /*for ( int i = 2; i < pow(10, 8); ++i ) {
         vector.push_back(i);
-    }
-    //runEratosthenes(vector);
+    }*/
+    //std::vector<int> vectorParallel = vector;
     //printVector(vector);
+    cout << "ready" << endl;
+    runEratosthenes(vector);
     runErasthotenesParallel(vector);
 }
 
