@@ -8,6 +8,7 @@
 #include <ctime>
 #include <iostream>
 #include <vector>
+#include <bitset>
 
 #include <tbb/tbb.h>
 #include <tbb/blocked_range.h>
@@ -156,8 +157,37 @@ void runErasthotenesParallel(std::vector<int>& vector) {
     printDuration(duration);
 }
 
-void runEratosthenesParallelBool() {
+void runEratosthenesParallelBool(vector<bool>& vector) {
+    cout << "Boolean" << endl;
+    int rangeBegin = 2;
+    int rangeEnd = vector.size();
+    double duration;
 
+    int maxPrim = sqrt(rangeEnd) + 2;
+    std::vector<bool> tmp = vector;
+
+    auto callback = [&](int index) {
+        tmp[index] = false;
+    };
+
+    std::clock_t start = clock();
+    for ( int i = rangeBegin + 2; i < rangeEnd; i += 2 ) {
+        tmp[i] = false;
+    }
+
+    for ( int i = rangeBegin + 1; i < maxPrim; i += 2 ) {
+        if ( tmp[i] == false ) {
+            continue;
+        }
+        parallel_for(3 * i, rangeEnd, 2 * i, callback);
+    }
+
+    duration = clock() - start;
+    printDuration(duration);
+    //printVector(tmp);
+    /*for ( int i = 0; i < rangeEnd; ++i ) {
+        cout << i << ": " << tmp[i] << endl;
+    }*/
 }
 
 int main()
@@ -166,6 +196,7 @@ int main()
 
     //testAddToVector();
     std::vector<int> vector(pow(10, 8), 0);
+    std::vector<bool> vectorBool(pow(10, 7), true);
 
     auto callback = [&](int index) {
         vector[index] = index;
@@ -175,6 +206,7 @@ int main()
     cout << "ready" << endl;
     runEratosthenes(vector);
     runErasthotenesParallel(vector);
+    runEratosthenesParallelBool(vectorBool);
 }
 
 // Programm ausführen: STRG+F5 oder "Debuggen" > Menü "Ohne Debuggen starten"
