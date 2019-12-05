@@ -1,27 +1,30 @@
+#pragma once
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <cstdio>
-#include <ctime>
 #include <iostream>
-#include <vector>
+#include <bitset>
 
-#include <tbb/tbb.h>
-#include <tbb/blocked_range.h>
-#include <tbb/parallel_for.h>
-#include <thread>
-#include <tbb/task.h>
+using namespace std;
 
-using namespace tbb;
+//const int N = 3;
 
-class Langford : public task {
+class Langford {
+
 public:
     Langford();
-    virtual ~Langford();
-
-    //task* execute();
+    Langford(int n);
+    //virtual ~Langford();
 
 private:
-    unsigned long* subtasks;
+    int solutions = 0;
+    int numberOfColors = 3;
+    std::bitset<6> field;
 
+    void setNumberOfColors(int n);
+    bool isFree(int index, std::bitset<6> &field);
+    bool set(int index, int count, std::bitset<6> &field);
+    bool isFieldFull(bitset<6>& field);
+    int solveHelper(int index, int count, std::bitset<6> &field);
+    void solve();
 };
+

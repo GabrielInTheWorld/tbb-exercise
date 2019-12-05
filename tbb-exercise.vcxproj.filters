@@ -18,7 +18,13 @@
     <ClCompile Include="tbb-exercise.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Langford.cpp">
+    <ClCompile Include="langford.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="LangfordSolver.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="langford-vector.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -26,7 +32,13 @@
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Langford.h">
+    <ClInclude Include="langford.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="LangfordSolver.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="langford-vector.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

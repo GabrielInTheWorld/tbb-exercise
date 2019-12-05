@@ -1,6 +1,9 @@
 // tbb-exercise.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
 //
 
+#include "langford.h"
+#include "langford-vector.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -190,13 +193,13 @@ void runEratosthenesParallelBool(vector<bool>& vector) {
     }*/
 }
 
-int main()
-{
+int main() {
+    cout << "Run main" << endl;
     //tbbTest();
 
     //testAddToVector();
-    std::vector<int> vector(pow(10, 8), 0);
-    std::vector<bool> vectorBool(pow(10, 7), true);
+    std::vector<int> vector(pow(10, 2), 0);
+    std::vector<bool> vectorBool(pow(10, 2), true);
 
     auto callback = [&](int index) {
         vector[index] = index;
@@ -204,9 +207,12 @@ int main()
     tbb::parallel_for(0, (int)vector.size(), callback);
 
     cout << "ready" << endl;
-    runEratosthenes(vector);
-    runErasthotenesParallel(vector);
-    runEratosthenesParallelBool(vectorBool);
+    //runEratosthenes(vector);
+    //runErasthotenesParallel(vector);
+    //runEratosthenesParallelBool(vectorBool);
+
+    //Langford lang = Langford();
+    LangfordVector v = LangfordVector(7);
 }
 
 // Programm ausführen: STRG+F5 oder "Debuggen" > Menü "Ohne Debuggen starten"

@@ -175,14 +175,18 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Langford.cpp" />
+    <ClCompile Include="langford-vector.cpp" />
+    <ClCompile Include="langford.cpp" />
+    <ClCompile Include="LangfordSolver.cpp" />
     <ClCompile Include="tbb-exercise.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Langford.h" />
+    <ClInclude Include="langford-vector.h" />
+    <ClInclude Include="langford.h" />
+    <ClInclude Include="LangfordSolver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
