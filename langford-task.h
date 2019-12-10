@@ -1,5 +1,4 @@
 #pragma once
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -20,15 +19,19 @@
 using namespace tbb;
 using namespace std;
 
-class LangfordSolver: public task {
+class LangfordTask : public task {
 public:
-    LangfordSolver(Field* langford, int count, unsigned long* sub);
-    virtual ~LangfordSolver();
+    LangfordTask(int count, int startPosition);
+    LangfordTask(Field& langford, int count, int position, unsigned long sub);
 
     task* execute();
-
 private:
-    Field* langford;
-    unsigned long* subtasks = 0;
+    Field langford;
+    unsigned long subtasks;
     int count;
+    int position;
+
+    void init(int count);
+    void print(string message);
 };
+

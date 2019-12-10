@@ -3,6 +3,10 @@
 
 #include "langford.h"
 #include "langford-vector.h"
+#include "langford-solver-runner.h"
+#include "langford-task.h"
+#include "LangfordSolver.h"
+#include "field.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,6 +18,7 @@
 #include <bitset>
 
 #include <tbb/tbb.h>
+#include <tbb/task.h>
 #include <tbb/blocked_range.h>
 #include <tbb/parallel_for.h>
 #include <thread>
@@ -211,8 +216,26 @@ int main() {
     //runErasthotenesParallel(vector);
     //runEratosthenesParallelBool(vectorBool);
 
+
+    int numberOfColors = 4;
     //Langford lang = Langford();
-    LangfordVector v = LangfordVector(7);
+    LangfordVector v(4);
+    //LangfordSolverRunner* runner = new LangfordSolverRunner(4);
+    LangfordSolverRunner runner(4);
+    //runner.run();
+    //runner -> run();
+    //LangfordSolver lf = new(tbb::task::allocate_child())LangfordSolver(new Field(4), 4, 0);
+    //Field field(4);
+    for ( int i = 0; i < numberOfColors - 1; ++i ) {
+        LangfordTask* root = new(tbb::task::allocate_root()) LangfordTask(numberOfColors, i);
+        task::spawn_root_and_wait(*root);
+    }
+
+    //LangfordTask task(4);
+    //tbb::task::spawn_root_and_wait(task);
+
+    //tbb::task_group group;
+    //group.run_and_wait(lf);
 }
 
 // Programm ausführen: STRG+F5 oder "Debuggen" > Menü "Ohne Debuggen starten"

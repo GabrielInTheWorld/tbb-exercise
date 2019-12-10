@@ -27,6 +27,18 @@
     <ClCompile Include="langford-vector.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="field.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="LangfordSolverRunner.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="LangfordTask.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="langford-task.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -39,6 +51,15 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="langford-vector.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="field.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="langford-solver-runner.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="langford-task.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

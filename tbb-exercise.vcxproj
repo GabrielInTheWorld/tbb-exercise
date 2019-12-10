@@ -175,15 +175,22 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="langford-task.cpp" />
     <ClCompile Include="langford-vector.cpp" />
     <ClCompile Include="langford.cpp" />
+    <ClCompile Include="field.cpp" />
     <ClCompile Include="LangfordSolver.cpp" />
+    <ClCompile Include="LangfordSolverRunner.cpp" />
+    <ClCompile Include="LangfordTask.cpp" />
     <ClCompile Include="tbb-exercise.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="field.h" />
+    <ClInclude Include="langford-solver-runner.h" />
+    <ClInclude Include="langford-task.h" />
     <ClInclude Include="langford-vector.h" />
     <ClInclude Include="langford.h" />
     <ClInclude Include="LangfordSolver.h" />
