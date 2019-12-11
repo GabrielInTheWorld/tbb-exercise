@@ -226,10 +226,12 @@ int main() {
     //runner -> run();
     //LangfordSolver lf = new(tbb::task::allocate_child())LangfordSolver(new Field(4), 4, 0);
     //Field field(4);
+    int solutions = 0;
     for ( int i = 0; i < numberOfColors - 1; ++i ) {
-        LangfordTask* root = new(tbb::task::allocate_root()) LangfordTask(numberOfColors, i);
+        LangfordTask* root = new(tbb::task::allocate_root()) LangfordTask(numberOfColors, i, &solutions);
         task::spawn_root_and_wait(*root);
     }
+    cout << "Found solutions: " << solutions << endl;
 
     //LangfordTask task(4);
     //tbb::task::spawn_root_and_wait(task);

@@ -21,13 +21,13 @@ using namespace std;
 
 class LangfordTask : public task {
 public:
-    LangfordTask(int count, int startPosition);
-    LangfordTask(Field& langford, int count, int position, unsigned long sub);
+    LangfordTask(int count, int startPosition, int *solutions);
+    LangfordTask(Field& langford, int count, int position, int *solutions);
 
     task* execute();
 private:
     Field langford;
-    unsigned long subtasks;
+    int *solutions = 0;
     int count;
     int position;
 
