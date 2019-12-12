@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <time.h>
 #include <cstdio>
 #include <ctime>
@@ -217,21 +218,36 @@ int main() {
     //runEratosthenesParallelBool(vectorBool);
 
 
-    int numberOfColors = 4;
+    double numberOfColors = 7;
     //Langford lang = Langford();
-    LangfordVector v(4);
+    //LangfordVector v(numberOfColors);
     //LangfordSolverRunner* runner = new LangfordSolverRunner(4);
-    LangfordSolverRunner runner(4);
+    //LangfordSolverRunner runner(4);
     //runner.run();
     //runner -> run();
     //LangfordSolver lf = new(tbb::task::allocate_child())LangfordSolver(new Field(4), 4, 0);
     //Field field(4);
     int solutions = 0;
-    for ( int i = 0; i < numberOfColors - 1; ++i ) {
+    int solutions2 = 0;
+    int tries = ceil((numberOfColors - 1) / 2);
+    cout << "Tries: " << tries << endl;
+    clock_t start = clock();
+    for ( int i = 0; i < tries; ++i ) {
         LangfordTask* root = new(tbb::task::allocate_root()) LangfordTask(numberOfColors, i, &solutions);
         task::spawn_root_and_wait(*root);
     }
-    cout << "Found solutions: " << solutions << endl;
+    clock_t end = clock();
+    auto callbackTask = [&](int index) {
+        LangfordTask* root = new(tbb::task::allocate_root()) LangfordTask(numberOfColors, index, &solutions2);
+        task::spawn_root_and_wait(*root);
+    };
+    tbb::parallel_for(0, tries, callbackTask);
+    clock_t end2 = clock();
+    cout << "Found solutions summarized: " << solutions << endl;
+    cout << "Found solutions2: " << solutions2 << endl;
+    //cout << "Solutions: " << solutions / 2 << endl;
+    cout << "Executed task in: " << (end - start) / (double)CLOCKS_PER_SEC << endl;
+    cout << "2 executed in time: " << (end2 - end) / (double)CLOCKS_PER_SEC << endl;
 
     //LangfordTask task(4);
     //tbb::task::spawn_root_and_wait(task);
