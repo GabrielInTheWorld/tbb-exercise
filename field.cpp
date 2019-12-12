@@ -20,22 +20,16 @@ Field::Field(Field& field) {
 
 void Field::setNumber(int n) {
     number = n;
-    field = vector<bool>(n*2, 0);
+    field = vector<bool>(n * 2, 0);
 }
 
 int Field::nextFree() {
-    /*for ( int i = 0; i < field.size(); ++i ) {
-        if ( field[i] == false ) {
-            return i;
-        }
-    }
-    return -1;*/
     return nextFree(0);
 }
 
 int Field::nextFree(int startAt) {
     for ( int i = startAt; i < field.size(); ++i ) {
-        if ( field[i] == false ) {
+        if ( field[i] == 0 ) {
             return i;
         }
     }
@@ -59,7 +53,6 @@ bool Field::isFree(int index) {
 }
 
 void Field::set(int index, int count) {
-    cout << "Set: " << index << " with count: " << count << endl;
     field[index] = 1;
     field[index + count + 1] = 1;
 }

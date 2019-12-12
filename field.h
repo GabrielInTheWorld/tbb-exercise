@@ -5,7 +5,10 @@
 #include <iostream>
 #include <bitset>
 
+#include <tbb/parallel_for.h>
+
 using namespace std;
+using namespace tbb;
 
 class Field {
 public:
