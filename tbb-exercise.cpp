@@ -6,6 +6,7 @@
 #include "langford-solver-runner.h"
 #include "langford-task.h"
 #include "LangfordSolver.h"
+#include "langford-sequence.h"
 #include "field.h"
 
 #include <stdio.h>
@@ -218,36 +219,61 @@ int main() {
     //runEratosthenesParallelBool(vectorBool);
 
 
-    double numberOfColors = 7;
+    double numberOfColors = 11;
     //Langford lang = Langford();
     //LangfordVector v(numberOfColors);
     //LangfordSolverRunner* runner = new LangfordSolverRunner(4);
     //LangfordSolverRunner runner(4);
     //runner.run();
     //runner -> run();
-    //LangfordSolver lf = new(tbb::task::allocate_child())LangfordSolver(new Field(4), 4, 0);
+    //LangfordSolver* lf = new(tbb::task::allocate_root())LangfordSolver(new Field(4), 4, &solutionsSolver);
     //Field field(4);
+    int solutionsSequence = 0;
+    int solutionsSolver = 0;
     int solutions = 0;
     int solutions2 = 0;
     int tries = ceil((numberOfColors - 1) / 2);
     cout << "Tries: " << tries << endl;
+    clock_t sequenceStart = clock();
+    //LangfordSequence* rootSequence = new(task::allocate_root()) LangfordSequence(numberOfColors, &solutions);
+    //task::spawn_root_and_wait(*rootSequence);
+    clock_t sequenceStop = clock();
+    cout << "LangfordSequence: " << solutions << " in " << (sequenceStop - sequenceStart) / (double)CLOCKS_PER_SEC << endl;
+
+    clock_t startBefore = clock();
+    auto callbackSolverPointer = [&](int index) {
+        LangfordSolver* root = new(tbb::task::allocate_root())LangfordSolver(numberOfColors, index, &solutionsSolver);
+        task::spawn_root_and_wait(*root);
+    };
+    tbb::parallel_for(0, tries, callbackSolverPointer);
+    clock_t startBeforeStop = clock();
+    cout << "With pointers: " << solutionsSolver << " in " << (startBeforeStop - startBefore) / (double)CLOCKS_PER_SEC << endl;
+
     clock_t start = clock();
     for ( int i = 0; i < tries; ++i ) {
         LangfordTask* root = new(tbb::task::allocate_root()) LangfordTask(numberOfColors, i, &solutions);
         task::spawn_root_and_wait(*root);
     }
     clock_t end = clock();
+    cout << "Normal task: " << solutions << " in " << (end - start) / (double)CLOCKS_PER_SEC << endl;
+
+    clock_t endBefore = clock();
     auto callbackTask = [&](int index) {
         LangfordTask* root = new(tbb::task::allocate_root()) LangfordTask(numberOfColors, index, &solutions2);
         task::spawn_root_and_wait(*root);
     };
     tbb::parallel_for(0, tries, callbackTask);
     clock_t end2 = clock();
-    cout << "Found solutions summarized: " << solutions << endl;
-    cout << "Found solutions2: " << solutions2 << endl;
+
+    cout << "Task with parallel: " << solutions2 << " in " << (end2 - endBefore) / (double)CLOCKS_PER_SEC << endl;
+    
+    //cout << "Found solutions with pointers: " << solutionsSolver << endl;
+    //cout << "Found solutions summarized: " << solutions << endl;
+    //cout << "Found solutions2: " << solutions2 << endl;
     //cout << "Solutions: " << solutions / 2 << endl;
-    cout << "Executed task in: " << (end - start) / (double)CLOCKS_PER_SEC << endl;
-    cout << "2 executed in time: " << (end2 - end) / (double)CLOCKS_PER_SEC << endl;
+    //cout << "Executed with pointers: " << (start - startBefore) / (double)CLOCKS_PER_SEC << endl;
+    //cout << "Executed task in: " << (end - start) / (double)CLOCKS_PER_SEC << endl;
+    //cout << "2 executed in time: " << (end2 - endBefore) / (double)CLOCKS_PER_SEC << endl;
 
     //LangfordTask task(4);
     //tbb::task::spawn_root_and_wait(task);

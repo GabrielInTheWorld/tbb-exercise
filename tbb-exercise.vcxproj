@@ -175,6 +175,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConnectedList.cpp" />
+    <ClCompile Include="langford-sequence.cpp" />
     <ClCompile Include="langford-task.cpp" />
     <ClCompile Include="langford-vector.cpp" />
     <ClCompile Include="langford.cpp" />
@@ -188,7 +190,9 @@
     <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="connected-list.h" />
     <ClInclude Include="field.h" />
+    <ClInclude Include="langford-sequence.h" />
     <ClInclude Include="langford-solver-runner.h" />
     <ClInclude Include="langford-task.h" />
     <ClInclude Include="langford-vector.h" />

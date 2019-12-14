@@ -17,9 +17,9 @@ LangfordSolverRunner::~LangfordSolverRunner() {
 }
 
 void LangfordSolverRunner::run() {
-    LangfordSolver* root = new(task::allocate_root())LangfordSolver(f, number, 0);
+    //LangfordSolver* root = new(task::allocate_root())LangfordSolver(f, number, 0);
     //list.run_and_wait(*new(task::allocate_child())LangfordSolver(f, number, 0));
-    task::spawn_root_and_wait(*root);
+    //task::spawn_root_and_wait(*root);
 }
 
 void LangfordSolverRunner::init(int n) {

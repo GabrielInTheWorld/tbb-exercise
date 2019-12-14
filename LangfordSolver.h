@@ -22,13 +22,15 @@ using namespace std;
 
 class LangfordSolver: public task {
 public:
-    LangfordSolver(Field* langford, int count, unsigned long* sub);
+    LangfordSolver(int numberOfColors, int position, int* solutions);
+    LangfordSolver(Field* langford, int count, int position, int* solutions);
     virtual ~LangfordSolver();
 
     task* execute();
 
 private:
     Field* langford;
-    unsigned long* subtasks = 0;
+    int* solutions;
     int count;
+    int position;
 };

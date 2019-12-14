@@ -14,45 +14,54 @@
 //#include <thread>
 //#include <tbb/task.h>
 
-LangfordSolver::LangfordSolver(Field* langford, int count, unsigned long* sub) {
+LangfordSolver::LangfordSolver(int numberOfColors, int position, int* solutions): count(numberOfColors), position(position), solutions(solutions) {
+    langford = new Field(numberOfColors);
+    //count = numberOfColors;
+    //LangfordSolver::solutions = solutions;
+}
+
+LangfordSolver::LangfordSolver(Field* langford, int count, int position, int* sub) {
     LangfordSolver::langford = langford;
     LangfordSolver::count = count;
-    subtasks = sub;
+    LangfordSolver::position = position;
+    solutions = sub;
 }
 
 LangfordSolver::~LangfordSolver() {
-
+    delete langford;
 }
 
 task* LangfordSolver::execute() {
-    *subtasks = 0;
+    //*subtasks = 0;
 
-    int index = langford->nextFree();
-    if ( index > -1 && langford->isFree(index + count + 1) ) {
-        int size = langford->freeFields();
-        unsigned long childTasks[7] = { 0 };
+    int index = position;
+    if ( langford->isFree(index + count + 1) ) {
+        //int size = langford->freeFields();
+        //unsigned long childTasks[7] = { 0 };
         int childs = 0;
         task_list list;
 
         langford->set(index, count);
         if ( count == 1 ) {
             // Ready!
-            cout << "Ready!" << endl;
-        } else {
-            for ( int i = langford->nextFree(); i < langford->getSize(); ++i ) {
-                Field* child = new Field(*langford);
-                list.push_back(*new(allocate_child())LangfordSolver(child, count - 1, childTasks + childs));
-                ++childs;
-            }
-            if ( childs > 0 ) {
-                set_ref_count(childs + 1);
-                spawn_and_wait_for_all(list);
-                for ( int i = 0; i < 7; ++i ) {
-                    *subtasks += childTasks[i];
-                }
-                *subtasks += childs;
-            }
+            //cout << "Ready!" << endl;
+            *solutions += 1;
         }
+        //} else {
+        for ( int i = langford->nextFree(); i < langford->getSize() - count && i > -1; i = langford->nextFree(i+1) ) {
+            Field* child = new Field(*langford);
+            list.push_back(*new(allocate_child())LangfordSolver(child, count - 1, i, solutions));
+            ++childs;
+        }
+        if ( childs > 0 ) {
+            set_ref_count(childs + 1);
+            spawn_and_wait_for_all(list);
+            /*for ( int i = 0; i < 7; ++i ) {
+                *subtasks += childTasks[i];
+            }
+            *subtasks += childs;*/
+        }
+        //}
     }
 
     //for (int i = 0; i <  )

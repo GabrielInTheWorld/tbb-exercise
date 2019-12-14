@@ -39,6 +39,12 @@
     <ClCompile Include="langford-task.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="ConnectedList.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="langford-sequence.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -60,6 +66,12 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="langford-task.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="connected-list.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="langford-sequence.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
