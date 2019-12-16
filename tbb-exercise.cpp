@@ -219,7 +219,7 @@ int main() {
     //runEratosthenesParallelBool(vectorBool);
 
 
-    double numberOfColors = 11;
+    int numberOfColors = 11;
     //Langford lang = Langford();
     //LangfordVector v(numberOfColors);
     //LangfordSolverRunner* runner = new LangfordSolverRunner(4);
@@ -232,11 +232,11 @@ int main() {
     int solutionsSolver = 0;
     int solutions = 0;
     int solutions2 = 0;
-    int tries = ceil((numberOfColors - 1) / 2);
+    int tries = numberOfColors % 2 == 0 ? numberOfColors - 1 : ceil(((double)numberOfColors - 1) / 2);
     cout << "Tries: " << tries << endl;
     clock_t sequenceStart = clock();
-    //LangfordSequence* rootSequence = new(task::allocate_root()) LangfordSequence(numberOfColors, &solutions);
-    //task::spawn_root_and_wait(*rootSequence);
+   /* LangfordSequence* rootSequence = new(task::allocate_root()) LangfordSequence(numberOfColors, &solutions);
+    task::spawn_root_and_wait(*rootSequence);*/
     clock_t sequenceStop = clock();
     cout << "LangfordSequence: " << solutions << " in " << (sequenceStop - sequenceStart) / (double)CLOCKS_PER_SEC << endl;
 
@@ -250,10 +250,10 @@ int main() {
     cout << "With pointers: " << solutionsSolver << " in " << (startBeforeStop - startBefore) / (double)CLOCKS_PER_SEC << endl;
 
     clock_t start = clock();
-    for ( int i = 0; i < tries; ++i ) {
+   /* for ( int i = 0; i < tries; ++i ) {
         LangfordTask* root = new(tbb::task::allocate_root()) LangfordTask(numberOfColors, i, &solutions);
         task::spawn_root_and_wait(*root);
-    }
+    }*/
     clock_t end = clock();
     cout << "Normal task: " << solutions << " in " << (end - start) / (double)CLOCKS_PER_SEC << endl;
 

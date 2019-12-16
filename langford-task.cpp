@@ -8,7 +8,7 @@ LangfordTask::LangfordTask(Field& field, int count, int position, int* solutions
 
 task* LangfordTask::execute() {
     int index = position;
-    if ( langford.isFree(index + count + 1) ) {
+    //if ( langford.isFree(index + count + 1) ) {
         langford.set(index, count);
         if ( count == 1 ) {
             *solutions += 1;
@@ -24,7 +24,7 @@ task* LangfordTask::execute() {
         }*/
 
         auto callback = [&](int index) {
-            if ( langford.isFree(index) ) {
+            if ( langford.isFree(index) && langford.isFree(index + count) ) {
                 Field child(langford);
                 list.push_back(*new(allocate_child())LangfordTask(child, count - 1, index, solutions));
                 ++childs;
@@ -36,7 +36,7 @@ task* LangfordTask::execute() {
             set_ref_count(childs + 1);
             spawn_and_wait_for_all(list);
         }
-    }
+    //}
 
     return NULL;
 }
