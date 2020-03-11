@@ -45,6 +45,9 @@
     <ClCompile Include="langford-sequence.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="langford-vector-task.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -72,6 +75,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="langford-sequence.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="langford-vector-task.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

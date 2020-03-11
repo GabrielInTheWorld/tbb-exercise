@@ -178,6 +178,7 @@
     <ClCompile Include="ConnectedList.cpp" />
     <ClCompile Include="langford-sequence.cpp" />
     <ClCompile Include="langford-task.cpp" />
+    <ClCompile Include="langford-vector-task.cpp" />
     <ClCompile Include="langford-vector.cpp" />
     <ClCompile Include="langford.cpp" />
     <ClCompile Include="field.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="langford-sequence.h" />
     <ClInclude Include="langford-solver-runner.h" />
     <ClInclude Include="langford-task.h" />
+    <ClInclude Include="langford-vector-task.h" />
     <ClInclude Include="langford-vector.h" />
     <ClInclude Include="langford.h" />
     <ClInclude Include="LangfordSolver.h" />
